@@ -7,20 +7,20 @@
 	<body>
 		<?php
 			$bank = new Bank4();
-			$bank->u_id = "0906513200";
-			$bank->u_nama = "Tobio";
-			//$bank->u_saldo = 2000000;
-			//$bank->u_ip_domisili = "192.168.0.4";
+			$u_id = "0906513200";
+			$name = "Tobio";
+			$saldo = 2000000;
+			$ip_domisili = "192.168.0.4";
 			
-			if($bank->userIsExist()){
-				$bank1 = $bank->getSaldo();				
+			if($bank->isUserExist($u_id)){
+				$bank1 = $bank->getSaldo($u_id);				
 				echo $bank1->saldo;
 				echo "<br />";
 			} else {
-				echo $bank->insert();
+				echo $bank->insert($u_id, $name, $saldo, $ip_domisili);
 				echo "<br />";
 			}
-			echo $bank->updateSaldo(15000000);
+			echo $bank->updateSaldo($u_id, 15000000);
 			echo "<br />";
 		?>
 		blablabla

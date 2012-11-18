@@ -4,7 +4,7 @@ require_once 'DB.php';
 class Bank4 extends DB {
 
     private $db_connect= "";
-    public $u_id, $u_nama, $u_saldo, $u_ip_domisili;
+    //public $u_id, $u_nama, $u_saldo, $u_ip_domisili;
     /*
         initialize the connection when the class creates
     */
@@ -25,8 +25,8 @@ class Bank4 extends DB {
  	other class methods place here
     */
 	
-	public function userIsExist() {
-        if(isset($this->u_id)){
+	public function isUserExist($u_id) {
+        if(isset($u_id)){
 			$query = 'SELECT id FROM bank
 					  WHERE id=:u_id';
 					  
@@ -41,7 +41,6 @@ class Bank4 extends DB {
 				return true;
 			}
 			else {
-				
 				return false;
 			}
         } else {
@@ -50,16 +49,37 @@ class Bank4 extends DB {
         }
     }
 	
-	public function insert()
+	public function getUserDomisili($u_id) {
+        if(isset($u_id)){
+			$query = 'SELECT ip_domisili FROM bank
+					  WHERE id=:u_id';
+					  
+			$sql_statement = $this->db_connect->prepare($query);
+			$sql_statement->bindParam(':u_id',$this->u_id,PDO::PARAM_STR);
+
+			if(!$sql_statement->execute()) {
+				return false;
+			}
+			$sql_count = $sql_statement->rowCount();
+			if($sql_count > 0) {
+				$sql_result = $sql_statement->fetch(PDO::FETCH_OBJ);
+
+                return $sql_result->ip_domisili;
+			}
+        }
+		return null;
+    }
+	
+	public function insert($u_id, $name, $saldo, $ip_domisili)
 	{
 		try {
-            if($this->userIsExist())
+            if($this->isUserExist($u_id))
             {
                echo "User is already existed" . "<br/>";
                return false;
             }
             else{
-                if(isset($this->u_id) && isset($this->u_nama))
+                if(isset($u_id) && isset($name))
                 {
                     $query = 'INSERT INTO bank
 								SET id=:u_id,
@@ -67,10 +87,10 @@ class Bank4 extends DB {
 								saldo=:u_saldo,								
 								ip_domisili=:u_ip_domisili';
                     $sql_statement = $this->db_connect->prepare($query);
-                    $sql_statement->bindParam(':u_id',$this->u_id,PDO::PARAM_STR);
-                    $sql_statement->bindParam(':u_nama',$this->u_nama,PDO::PARAM_STR);
-                    $sql_statement->bindParam(':u_saldo',$this->u_saldo,PDO::PARAM_INT);
-                    $sql_statement->bindParam(':u_ip_domisili',$this->u_ip_domisili,PDO::PARAM_STR);
+                    $sql_statement->bindParam(':u_id',$u_id,PDO::PARAM_STR);
+                    $sql_statement->bindParam(':u_nama',$name,PDO::PARAM_STR);
+                    $sql_statement->bindParam(':u_saldo',$saldo,PDO::PARAM_INT);
+                    $sql_statement->bindParam(':u_ip_domisili',$ip_domisili,PDO::PARAM_STR);
 
                     if(!$sql_statement->execute()) {
                         return false;
@@ -89,10 +109,10 @@ class Bank4 extends DB {
         }
 	}
 	
-	public function updateSaldo($newSaldo)
+	public function updateSaldo($u_id, $newSaldo)
 	{
 		try {
-           if($this->u_id) {
+           if(isset($u_id)) {
                 $query ='UPDATE bank SET
                         saldo=:newSaldo
                         WHERE id=:u_id';
@@ -115,10 +135,10 @@ class Bank4 extends DB {
         }
 	}
 	
-	public function getSaldo()
+	public function getSaldo($u_id)
 	{
 		try {
-            if($this->u_id) {
+            if($u_id) {
                 $query = "SELECT saldo FROM bank WHERE id=:u_id";
                 $sql_statement = $this->db_connect->prepare($query);
                 $sql_statement->bindParam(':u_id',$this->u_id, PDO::PARAM_STR);
@@ -134,7 +154,7 @@ class Bank4 extends DB {
 
                 $sql_result = $sql_statement->fetch(PDO::FETCH_OBJ);
 
-                return $sql_result;
+                return $sql_result->saldo;
             }
             else {
                 return -1;
