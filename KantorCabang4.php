@@ -4,6 +4,7 @@ require_once "autoload.php";
 
 /* 
  * 
+ * 
  */
 class KantorCabang4 {
 	private $bank;
@@ -36,15 +37,18 @@ class KantorCabang4 {
 		}
 	}
 	
+	// ping keberadaan cabang ini
 	public function ping() {
 		return 1;
 	}
 	
+	// ambil saldo di cabang sendiri
 	public function getSaldo($user_id) {
 		$result = $this->bank->getSaldo($user_id);
 		return $result;
 	}
 	
+	// ambil saldo di seluruh cabang lain
 	public function getTotalSaldo($user_id) {
 		$kuorum = $this->kuorum();
 		if ($kuorum < 7) {
@@ -83,7 +87,7 @@ class KantorCabang4 {
 	}
 	
 	/**
-	* getSaldo in another cabang
+	* getSaldo di cabang lain
 	*/
 	private function getSaldoInPeers($loc, $user_id) {
 		// ke depannya bisa diganti ama satu source file, isinya endpoint dari kelompok lain.
