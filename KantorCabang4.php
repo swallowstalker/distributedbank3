@@ -15,6 +15,9 @@ class KantorCabang4 {
 		$this->client = new SoapClient(PEER4);
 	}
 	
+	/* Membutuhkan fungsi transfer di client untuk 
+	 * memeriksa saldo user yang akan melakukan transfer.
+	 */
 	public function transfer($user_id, $nilai) {
 		$kuorum = $this->kuorum();
 		$status = 0;
@@ -29,11 +32,10 @@ class KantorCabang4 {
 	}
 	
 	public function register($user_id, $nama, $ip_domisili) {
-		$kuorum = $this->kuorum();
+		//$kuorum = $this->kuorum();
+		$kuorum = 4;
 		if ($kuorum >= 4) {			
-			if (!($this->bank->isUserExist($user_id))) {
-				$this->bank->insert($user_id, $nama, 0, $ip_domisili);
-			}
+    		$this->bank->insert($user_id, $nama, 0, $ip_domisili);
 		}
 	}
 	
@@ -44,6 +46,7 @@ class KantorCabang4 {
 	
 	// ambil saldo di cabang sendiri
 	public function getSaldo($user_id) {
+	    //$this->bank->u_id = $user_id;
 		$result = $this->bank->getSaldo($user_id);
 		return $result;
 	}

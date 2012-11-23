@@ -72,6 +72,7 @@ class Bank4 extends DB {
 	
 	public function insert($u_id, $name, $saldo, $ip_domisili)
 	{
+	    echo $name;
 		try {
             if($this->isUserExist($u_id))
             {
@@ -98,13 +99,12 @@ class Bank4 extends DB {
                     return true;
                 }
                 else {
-
                     return false;
                 }
             }
         }
         catch(PDOException $e){
-            //echo "error! can't insert into the user information" . $e->getMessage() . "<br/>"
+            //echo "error! can't insert into the user information" . $e->getMessage() . "<br/>";
             return false;
         }
 	}
@@ -135,13 +135,42 @@ class Bank4 extends DB {
         }
 	}
 	
+	public function getAllUser()
+	{
+	    
+		try {
+           
+                $query ='SELECT id, nama From bank';
+                $sql_statement = $this->db_connect->prepare($query);
+                //$sql_statement->bindParam(':newSaldo',$newSaldo,PDO::PARAM_INT);
+                //$sql_statement->bindParam(':u_id',$this->u_id,PDO::PARAM_STR);                
+
+                if(!$sql_statement->execute()) {
+                    return -1;
+                }
+                
+                $row_count = $sql_statement->rowCount();
+                if ($row_count==0)
+                {
+                    return -1;
+                }
+                
+                $sql_result = $sql_statement->fetchAll(PDO::FETCH_OBJ);
+                return $sql_result;            
+        }
+        catch(PDOException $e) {
+            //echo "error! can't update your password!!" .$e->getMessage() . "<br/>"
+            return -1;
+        }
+	}
+	
 	public function getSaldo($u_id)
 	{
 		try {
             if($u_id) {
                 $query = "SELECT saldo FROM bank WHERE id=:u_id";
                 $sql_statement = $this->db_connect->prepare($query);
-                $sql_statement->bindParam(':u_id',$this->u_id, PDO::PARAM_STR);
+                $sql_statement->bindParam(':u_id',$u_id, PDO::PARAM_STR);
 
                 if (!$sql_statement->execute()) {
                     return -1;
