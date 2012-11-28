@@ -60,8 +60,8 @@ class KantorCabang4 {
 		$dom = $this->bank->getUserDomisili($user_id);
 		$total = 0;
 		if ($dom == HERE) {
-			foreach (LOCATION as $loc) {
-				$saldo = $this->getSaldoInPeers($loc, $user_id);
+			foreach ($this->peers as $peer) {
+				$saldo = $this->getSaldoInPeers($peer, $user_id);
 				$total += $saldo;
 			}
 			$total += $this->getSaldo($user_id);
@@ -73,18 +73,17 @@ class KantorCabang4 {
 	
 	private function kuorum() {
 		// ke depannya bisa diganti ama satu source file, isinya endpoint dari kelompok lain.
-		$client1 = new SoapClient(PEER1);
-		$client2 = new SoapClient(PEER2);
-		$client3 = new SoapClient(PEER3);
-		$client4 = new SoapClient(PEER4);
-		$client5 = new SoapClient(PEER5);
-		$client6 = new SoapClient(PEER6);
-		$client7 = new SoapClient(PEER7);
-		$totalActiveNode = $client4->ping();
-		
-		$totalActiveNode = $client1->ping() + $client2->ping();
-		$totalActiveNode = $totalActiveNode + $client3->ping() + $client5->ping();
-		$totalActiveNode = $totalActiveNode + $client6->ping() + $client7->ping();
+		$totalActiveNode = $this->ping();
+		foreach ($this->peers as $peer) {
+			try {
+				$client = new SoapClient($peer, array('exception'=>true));
+				$pong = $client->ping();
+				if (is_int($pong)) {
+					$totalActiveNode += $client->ping();
+				}
+			} catch (Exception $) {
+			}
+		}
 		
 		return $totalActiveNode;
 	}

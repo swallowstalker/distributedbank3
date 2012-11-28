@@ -31,7 +31,7 @@ class Bank4 extends DB {
 					  WHERE id=:u_id';
 					  
 			$sql_statement = $this->db_connect->prepare($query);
-			$sql_statement->bindParam(':u_id',$this->u_id,PDO::PARAM_STR);
+			$sql_statement->bindParam(':u_id',$u_id,PDO::PARAM_STR);
 
 			if(!$sql_statement->execute()) {
 				return false;
@@ -55,7 +55,7 @@ class Bank4 extends DB {
 					  WHERE id=:u_id';
 					  
 			$sql_statement = $this->db_connect->prepare($query);
-			$sql_statement->bindParam(':u_id',$this->u_id,PDO::PARAM_STR);
+			$sql_statement->bindParam(':u_id',$u_id,PDO::PARAM_STR);
 
 			if(!$sql_statement->execute()) {
 				return false;
@@ -118,7 +118,7 @@ class Bank4 extends DB {
                         WHERE id=:u_id';
                 $sql_statement = $this->db_connect->prepare($query);
                 $sql_statement->bindParam(':newSaldo',$newSaldo,PDO::PARAM_INT);
-                $sql_statement->bindParam(':u_id',$this->u_id,PDO::PARAM_STR);                
+                $sql_statement->bindParam(':u_id',$u_id,PDO::PARAM_STR);                
 
                 if(!$sql_statement->execute()) {
                     return -1;
