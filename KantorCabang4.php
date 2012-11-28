@@ -76,7 +76,7 @@ class KantorCabang4 {
 		$totalActiveNode = $this->ping();
 		foreach ($this->peers as $peer) {
 			try {
-				$client = new SoapClient($peer, array('exception'=>true));
+				$client = new SoapClient($peer, array('exceptions'=>true));
 				$pong = $client->ping();
 				if (is_int($pong)) {
 					$totalActiveNode += $client->ping();
@@ -93,10 +93,12 @@ class KantorCabang4 {
 	*/
 	private function getSaldoInPeers($loc, $user_id) {
 		// ke depannya bisa diganti ama satu source file, isinya endpoint dari kelompok lain.
-		$this->client->__setLocation($loc);
-		$saldo = $client->getSaldo($user_id);
+		$this->client = new SoapClient($loc);
+		$saldo = $this->client->getSaldo($user_id);
 		if($saldo < 0) {
-			$client->register();
+			$user = $this->bank->getUserData($user_id);
+			$this->client->register($user->user_id, $user->nama, $user->ip_domisili);
+			$saldo = 0;
 		}
 		return $saldo;
 	}

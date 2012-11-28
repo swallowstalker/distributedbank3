@@ -194,5 +194,36 @@ class Bank4 extends DB {
             return -1;
         }
 	}
+	
+	public function getUserData($u_id)
+	{
+		try {
+            if($u_id) {
+                $query = "SELECT * FROM bank WHERE id=:u_id";
+                $sql_statement = $this->db_connect->prepare($query);
+                $sql_statement->bindParam(':u_id',$u_id, PDO::PARAM_STR);
+
+                if (!$sql_statement->execute()) {
+                    return -1;
+                }
+                $row_count = $sql_statement->rowCount();
+                if ($row_count==0)
+                {
+                    return -1;
+                }
+
+                $sql_result = $sql_statement->fetch(PDO::FETCH_OBJ);
+
+                return $sql_result;
+            }
+            else {
+                return -1;
+            }
+        }
+        catch(PDOException $e){
+            //echo "error: " . $e->getMessage() . "<br/>"
+            return -1;
+        }
+	}
 }
 ?>
