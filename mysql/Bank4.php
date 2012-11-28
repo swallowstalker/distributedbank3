@@ -1,9 +1,9 @@
 <?php
-require_once 'DB.php';
+require_once 'DBank.php';
 
-class Bank4 extends DB {
+class Bank4 extends DBank {
 
-    private $db_connect= "";
+    private $db_connect = "";
     //public $u_id, $u_nama, $u_saldo, $u_ip_domisili;
     /*
         initialize the connection when the class creates
@@ -72,11 +72,11 @@ class Bank4 extends DB {
 	
 	public function insert($u_id, $name, $saldo, $ip_domisili)
 	{
-	    echo $name;
+	    //echo $name;
 		try {
             if($this->isUserExist($u_id))
             {
-               echo "User is already existed" . "<br/>";
+               //echo "User is already existed" . "<br/>";
                return false;
             }
             else{

@@ -8,7 +8,7 @@
 	</head>
 	<body>
 	    <?php // tambahin post untuk form ?>
-		<form method="post" action="http://localhost/dist-bank/distributedbank3/proses_cek_saldo.php">
+		<form method="post" action="http://localhost/distributedbank3/proses_cek_saldo.php">
 			<table>
 				<tr>
 					<td> Nama  </td>

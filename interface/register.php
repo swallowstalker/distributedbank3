@@ -4,7 +4,7 @@
 	</head>
 	<body>
 	    <?php // tambahin post untuk form ?>
-		<form method="post" action="http://localhost/dist-bank/distributedbank3/proses_register.php">
+		<form method="post" action="http://localhost/distributedbank3/proses_register.php">
 			<table>
 				<tr>
 					<td> Nama  </td>

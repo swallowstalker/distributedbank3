@@ -10,10 +10,10 @@
     
     // melakukan proses register.
     $client = new SoapClient(PEER4); // mesin kita sendiri.
-    echo $client->register($field_id, $field_nama, HERE);
+    $stat = $client->register($field_id, $field_nama, HERE);
     
     // pesan
-    echo "Register telah dilakukan.<br />";
+    echo "Register telah dilakukan: {$stat}.<br />";
     echo "Mohon periksa kembali apakah datanya sudah ada sebelumnya.<br /><br />";
     echo "<a href=\"interface/home.php\">Kembali</a>";
     

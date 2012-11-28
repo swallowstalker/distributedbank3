@@ -1,6 +1,6 @@
 <?php
     require_once "../autoload.php";
-    PEER1
+	//echo phpversion();
 ?>
 
 <html>
@@ -8,7 +8,7 @@
 		<title> Transfer </title>
 	</head>
 	<body>
-		<form method="post" action="http://localhost/dist-bank/distributedbank3/proses_transfer.php">
+		<form method="post" action="http://localhost/distributedbank3/proses_transfer.php">
 			<table>
 				<tr>
 					<td> Pengirim  </td>

@@ -24,7 +24,7 @@
             // jika transfer berhasil, kurangi saldo di mesin kita.
             $saldo = $ownServer->getSaldo($dropdown_nama);
             $saldoTersisa = $saldo - $field_nominal;
-            //echo "Saldo saat ini di server: ". $ownServer->getSaldo($dropdown_nama) ."<br />";
+            echo "Saldo saat ini di server: ". $ownServer->getSaldo($dropdown_nama) ."<br />";
             
             $bank = new Bank4();
             $bank->updateSaldo($dropdown_nama, $saldoTersisa);

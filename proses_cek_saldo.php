@@ -1,7 +1,5 @@
 <?php
-    
-
-    require_once "autoload.php";
+    require_once "mysql/config.php";
 
     // extract hasil field kiriman dari form.
     extract($_POST);
@@ -10,7 +8,9 @@
     $client = new SoapClient(PEER4); // mesin kita sendiri.
     
     if (isset($btn_saldo)) {
-        $saldo = $client->getSaldo($dropdown_nama);
+        $saldo = $client->getSaldo(trim($dropdown_nama));
+		//$saldo = $client->__soapCall('getSaldo',array('user_id'=>trim($dropdown_nama)));
+		//$saldo = $client->ping();
         // pesan
         echo "Saldo: ". $saldo ."<br />";
     } else if (isset($btn_total_saldo)){

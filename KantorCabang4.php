@@ -9,10 +9,12 @@ require_once "autoload.php";
 class KantorCabang4 {
 	private $bank;
 	private $client;
+	private $peers;
 	
 	public function __construct() {
 		$this->bank = new Bank4();
 		$this->client = new SoapClient(PEER4);
+		$this->peers = array(PEER1,PEER2,PEER3,PEER5,PEER6,PEER7);
 	}
 	
 	/* Membutuhkan fungsi transfer di client untuk 
@@ -32,11 +34,16 @@ class KantorCabang4 {
 	}
 	
 	public function register($user_id, $nama, $ip_domisili) {
-		//$kuorum = $this->kuorum();
-		$kuorum = 4;
-		if ($kuorum >= 4) {			
-    		$this->bank->insert($user_id, $nama, 0, $ip_domisili);
+		$kuorum = $this->kuorum();
+		//$kuorum = 5;
+		$res = 'kuorum: '.$kuorum;
+		if ($kuorum >= 4) {
+    		$res = $this->bank->insert($user_id, $nama, 0, $ip_domisili);
 		}
+		if ($res === true) {
+			return 'Registered';
+		}
+		return $kuorum;
 	}
 	
 	// ping keberadaan cabang ini
@@ -46,7 +53,6 @@ class KantorCabang4 {
 	
 	// ambil saldo di cabang sendiri
 	public function getSaldo($user_id) {
-	    //$this->bank->u_id = $user_id;
 		$result = $this->bank->getSaldo($user_id);
 		return $result;
 	}
@@ -79,12 +85,11 @@ class KantorCabang4 {
 				$client = new SoapClient($peer, array('exceptions'=>true));
 				$pong = $client->ping();
 				if (is_int($pong)) {
-					$totalActiveNode += $client->ping();
+					$totalActiveNode += $pong;
 				}
-			} catch (Exception $) {
+			} catch (Exception $except) {
 			}
 		}
-		
 		return $totalActiveNode;
 	}
 	
@@ -104,8 +109,7 @@ class KantorCabang4 {
 	}
 }
 
-$server = new SoapServer('distributed-bank.wsdl');
+$server = new SoapServer('distributed-bank.xml');
 $server->setClass('KantorCabang4');
 $server->handle();
-
 ?>
