@@ -1,5 +1,5 @@
 <?php
-
+require_once 'config.php';
 class DBank {
 
      private static $_instance;

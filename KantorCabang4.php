@@ -53,6 +53,10 @@ class KantorCabang4 {
 	
 	// ambil saldo di cabang sendiri
 	public function getSaldo($user_id) {
+		$kuorum = $this->kuorum();
+		if ($kuorum < 4)
+			return -1;
+			
 		$result = $this->bank->getSaldo($user_id);
 		return $result;
 	}
@@ -98,12 +102,16 @@ class KantorCabang4 {
 	*/
 	private function getSaldoInPeers($loc, $user_id) {
 		// ke depannya bisa diganti ama satu source file, isinya endpoint dari kelompok lain.
-		$this->client = new SoapClient($loc);
-		$saldo = $this->client->getSaldo($user_id);
-		if($saldo < 0) {
-			$user = $this->bank->getUserData($user_id);
-			$this->client->register($user->user_id, $user->nama, $user->ip_domisili);
-			$saldo = 0;
+		try {
+			$this->client = new SoapClient($loc);
+			$saldo = $this->client->getSaldo($user_id);
+			if($saldo < 0) {
+				$user = $this->bank->getUserData($user_id);
+				$this->client->register($user->user_id, $user->nama, $user->ip_domisili);
+				$saldo = 0;
+			}			
+		} catch (Exception $excep){
+			return 0;
 		}
 		return $saldo;
 	}

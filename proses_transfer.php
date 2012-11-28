@@ -14,6 +14,12 @@
         
         // transfer ke mesin tujuan.
         $client = new SoapClient($tujuan); // mesin tujuan.
+		$isRegistered = $client->getSaldo($dropdown_nama);
+		if ($isRegistered < 0) {
+			$bank = new Bank4();
+			$user = $bank->getUserData($dropdown_nama);
+			$client->register($user->id, $user->nama, HERE);
+		}
         $response = $client->transfer($dropdown_nama, $field_nominal);
         
         // aksi untuk balasan dari mesin tujuan.
